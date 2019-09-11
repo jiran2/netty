@@ -31,10 +31,16 @@ static const uint64_t NETTY_BILLION = 1000000000L;
 char* netty_unix_util_prepend(const char* prefix, const char* str) {
     if (prefix == NULL) {
         char* result = (char*) malloc(sizeof(char) * (strlen(str) + 1));
+        if (result == NULL) {
+          return NULL;
+        }
         strcpy(result, str);
         return result;
     }
     char* result = (char*) malloc(sizeof(char) * (strlen(prefix) + strlen(str) + 1));
+    if (result == NULL) {
+        return NULL;
+    }
     strcpy(result, prefix);
     strcat(result, str);
     return result;
@@ -95,7 +101,9 @@ char* netty_unix_util_parse_package_prefix(const char* libraryPathName, const ch
     // Make sure packagePrefix is terminated with the '/' JNI package separator.
     if(*(--temp) != '/') {
         temp = packagePrefix;
-        packagePrefix = netty_unix_util_prepend(packagePrefix, "/");
+        if ((packagePrefix = netty_unix_util_prepend(packagePrefix, "/")) == NULL) {
+            *status = JNI_ERR;
+        }
         free(temp);
     }
     return packagePrefix;
@@ -185,13 +193,15 @@ jboolean netty_unix_util_initialize_wait_clock(clockid_t* clockId) {
 }
 
 jint netty_unix_util_register_natives(JNIEnv* env, const char* packagePrefix, const char* className, const JNINativeMethod* methods, jint numMethods) {
-    char* nettyClassName = netty_unix_util_prepend(packagePrefix, className);
-    jclass nativeCls = (*env)->FindClass(env, nettyClassName);
-    free(nettyClassName);
-    nettyClassName = NULL;
-    if (nativeCls == NULL) {
-        return JNI_ERR;
-    }
+    char* nettyClassName = NULL;
+    int retValue = JNI_ERR;
 
-    return (*env)->RegisterNatives(env, nativeCls, methods, numMethods);
+    NETTY_PREPEND(packagePrefix, className, nettyClassName, done);
+    jclass nativeCls = (*env)->FindClass(env, nettyClassName);
+    if (nativeCls != NULL) {
+        retValue = (*env)->RegisterNatives(env, nativeCls, methods, numMethods);
+    }
+done:
+    free(nettyClassName);
+    return retValue;
 }

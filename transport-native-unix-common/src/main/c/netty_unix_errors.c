@@ -26,6 +26,7 @@ static jclass channelExceptionClass = NULL;
 static jclass ioExceptionClass = NULL;
 static jclass portUnreachableExceptionClass = NULL;
 static jclass closedChannelExceptionClass = NULL;
+static jclass oomeClass = NULL;
 static jmethodID closedChannelExceptionMethodId = NULL;
 
 /** Notice: every usage of exceptionMessage needs to release the allocated memory for the sequence of char */
@@ -43,12 +44,20 @@ void netty_unix_errors_throwRuntimeException(JNIEnv* env, char* message) {
 
 void netty_unix_errors_throwRuntimeExceptionErrorNo(JNIEnv* env, char* message, int errorNumber) {
     char* allocatedMessage = exceptionMessage(message, errorNumber);
+    if (allocatedMessage == NULL) {
+        netty_unix_errors_throwOutOfMemoryError(env);
+        return;
+    }
     (*env)->ThrowNew(env, runtimeExceptionClass, allocatedMessage);
     free(allocatedMessage);
 }
 
 void netty_unix_errors_throwChannelExceptionErrorNo(JNIEnv* env, char* message, int errorNumber) {
     char* allocatedMessage = exceptionMessage(message, errorNumber);
+    if (allocatedMessage == NULL) {
+        netty_unix_errors_throwOutOfMemoryError(env);
+        return;
+    }
     (*env)->ThrowNew(env, channelExceptionClass, allocatedMessage);
     free(allocatedMessage);
 }
@@ -63,18 +72,23 @@ void netty_unix_errors_throwPortUnreachableException(JNIEnv* env, char* message)
 
 void netty_unix_errors_throwIOExceptionErrorNo(JNIEnv* env, char* message, int errorNumber) {
     char* allocatedMessage = exceptionMessage(message, errorNumber);
+    if (allocatedMessage == NULL) {
+        netty_unix_errors_throwOutOfMemoryError(env);
+        return;
+    }
     (*env)->ThrowNew(env, ioExceptionClass, allocatedMessage);
     free(allocatedMessage);
 }
 
 void netty_unix_errors_throwClosedChannelException(JNIEnv* env) {
     jobject exception = (*env)->NewObject(env, closedChannelExceptionClass, closedChannelExceptionMethodId);
-    (*env)->Throw(env, exception);
+    if (exception != NULL) {
+        (*env)->Throw(env, exception);
+    }
 }
 
 void netty_unix_errors_throwOutOfMemoryError(JNIEnv* env) {
-    jclass exceptionClass = (*env)->FindClass(env, "java/lang/OutOfMemoryError");
-    (*env)->ThrowNew(env, exceptionClass, "");
+    (*env)->ThrowNew(env, oomeClass, "");
 }
 
 // JNI Registered Methods Begin
@@ -151,107 +165,40 @@ static const jint statically_referenced_fixed_method_table_size = sizeof(statica
 // JNI Method Registration Table End
 
 jint netty_unix_errors_JNI_OnLoad(JNIEnv* env, const char* packagePrefix) {
+    int returnValue = JNI_ERR;
+    char* nettyClassName = NULL;
+
     // We must register the statically referenced methods first!
     if (netty_unix_util_register_natives(env,
             packagePrefix,
             "io/netty/channel/unix/ErrorsStaticallyReferencedJniMethods",
             statically_referenced_fixed_method_table,
             statically_referenced_fixed_method_table_size) != 0) {
-        return JNI_ERR;
+        goto done;
     }
 
-    jclass localRuntimeExceptionClass = (*env)->FindClass(env, "java/lang/RuntimeException");
-    if (localRuntimeExceptionClass == NULL) {
-        // pending exception...
-        return JNI_ERR;
-    }
-    runtimeExceptionClass = (jclass) (*env)->NewGlobalRef(env, localRuntimeExceptionClass);
-    if (runtimeExceptionClass == NULL) {
-        // out-of-memory!
-        netty_unix_errors_throwOutOfMemoryError(env);
-        return JNI_ERR;
-    }
+    NETTY_LOAD_CLASS(env, oomeClass, "java/lang/OutOfMemoryError", done);
+    NETTY_LOAD_CLASS(env, runtimeExceptionClass, "java/lang/RuntimeException", done);
+    NETTY_PREPEND(packagePrefix, "io/netty/channel/ChannelException", nettyClassName, done);
+    NETTY_LOAD_CLASS(env, channelExceptionClass, nettyClassName, done);
+    NETTY_LOAD_CLASS(env, closedChannelExceptionClass,  "java/nio/channels/ClosedChannelException", done);
+    NETTY_GET_METHOD(env, closedChannelExceptionClass, closedChannelExceptionMethodId, "<init>", "()V", done);
+    NETTY_LOAD_CLASS(env, ioExceptionClass,  "java/io/IOException", done);
+    NETTY_LOAD_CLASS(env, portUnreachableExceptionClass,  "java/net/PortUnreachableException", done);
 
-    char* nettyClassName = netty_unix_util_prepend(packagePrefix, "io/netty/channel/ChannelException");
-    jclass localChannelExceptionClass = (*env)->FindClass(env, nettyClassName);
+    returnValue = NETTY_JNI_VERSION;
+done:
     free(nettyClassName);
-    nettyClassName = NULL;
-    if (localChannelExceptionClass == NULL) {
-        // pending exception...
-        return JNI_ERR;
-    }
-    channelExceptionClass = (jclass) (*env)->NewGlobalRef(env, localChannelExceptionClass);
-    if (channelExceptionClass == NULL) {
-        // out-of-memory!
-        netty_unix_errors_throwOutOfMemoryError(env);
-        return JNI_ERR;
-    }
 
-    // cache classes that are used within other jni methods for performance reasons
-    jclass localClosedChannelExceptionClass = (*env)->FindClass(env, "java/nio/channels/ClosedChannelException");
-    if (localClosedChannelExceptionClass == NULL) {
-        // pending exception...
-        return JNI_ERR;
-    }
-    closedChannelExceptionClass = (jclass) (*env)->NewGlobalRef(env, localClosedChannelExceptionClass);
-    if (closedChannelExceptionClass == NULL) {
-        // out-of-memory!
-        netty_unix_errors_throwOutOfMemoryError(env);
-        return JNI_ERR;
-    }
-    closedChannelExceptionMethodId = (*env)->GetMethodID(env, closedChannelExceptionClass, "<init>", "()V");
-    if (closedChannelExceptionMethodId == NULL) {
-        netty_unix_errors_throwRuntimeException(env, "failed to get method ID: ClosedChannelException.<init>()");
-        return JNI_ERR;
-    }
-
-    jclass localIoExceptionClass = (*env)->FindClass(env, "java/io/IOException");
-    if (localIoExceptionClass == NULL) {
-        // pending exception...
-        return JNI_ERR;
-    }
-    ioExceptionClass = (jclass) (*env)->NewGlobalRef(env, localIoExceptionClass);
-    if (ioExceptionClass == NULL) {
-        // out-of-memory!
-        netty_unix_errors_throwOutOfMemoryError(env);
-        return JNI_ERR;
-    }
-
-    jclass localPortUnreachableExceptionClass = (*env)->FindClass(env, "java/net/PortUnreachableException");
-    if (localPortUnreachableExceptionClass == NULL) {
-        // pending exception...
-        return JNI_ERR;
-    }
-    portUnreachableExceptionClass = (jclass) (*env)->NewGlobalRef(env, localPortUnreachableExceptionClass);
-    if (portUnreachableExceptionClass == NULL) {
-        // out-of-memory!
-        netty_unix_errors_throwOutOfMemoryError(env);
-        return JNI_ERR;
-    }
-
-    return NETTY_JNI_VERSION;
+    return returnValue;
 }
 
 void netty_unix_errors_JNI_OnUnLoad(JNIEnv* env) {
     // delete global references so the GC can collect them
-    if (runtimeExceptionClass != NULL) {
-        (*env)->DeleteGlobalRef(env, runtimeExceptionClass);
-        runtimeExceptionClass = NULL;
-    }
-    if (channelExceptionClass != NULL) {
-        (*env)->DeleteGlobalRef(env, channelExceptionClass);
-        channelExceptionClass = NULL;
-    }
-    if (ioExceptionClass != NULL) {
-        (*env)->DeleteGlobalRef(env, ioExceptionClass);
-        ioExceptionClass = NULL;
-    }
-    if (portUnreachableExceptionClass != NULL) {
-        (*env)->DeleteGlobalRef(env, portUnreachableExceptionClass);
-        portUnreachableExceptionClass = NULL;
-    }
-    if (closedChannelExceptionClass != NULL) {
-        (*env)->DeleteGlobalRef(env, closedChannelExceptionClass);
-        closedChannelExceptionClass = NULL;
-    }
+    NETTY_UNLOAD_CLASS(env, oomeClass);
+    NETTY_UNLOAD_CLASS(env, runtimeExceptionClass);
+    NETTY_UNLOAD_CLASS(env, channelExceptionClass);
+    NETTY_UNLOAD_CLASS(env, ioExceptionClass);
+    NETTY_UNLOAD_CLASS(env, portUnreachableExceptionClass);
+    NETTY_UNLOAD_CLASS(env, closedChannelExceptionClass);
 }

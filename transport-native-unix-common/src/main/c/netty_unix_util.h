@@ -36,6 +36,62 @@ typedef int clockid_t;
 
 #endif /* __MACH__ */
 
+#define NETTY_BEGIN_MACRO     if (1) {
+#define NETTY_END_MACRO       } else (void)(0)
+
+#define NETTY_LOAD_CLASS(E, C, N, R)                  \
+    NETTY_BEGIN_MACRO                                 \
+        jclass _##C = (*(E))->FindClass((E), N);    \
+        if (_##C == NULL) {                         \
+            (*(E))->ExceptionClear((E));            \
+            goto R;                                 \
+        }                                           \
+        C = (*(E))->NewGlobalRef((E), _##C);        \
+        (*(E))->DeleteLocalRef((E), _##C);          \
+        if (C == NULL) {                            \
+            goto R;                                 \
+        }                                           \
+    NETTY_END_MACRO
+
+#define NETTY_UNLOAD_CLASS(E, C)                      \
+    NETTY_BEGIN_MACRO                                 \
+        if (C != NULL) {                              \
+            (*(E))->DeleteGlobalRef((E), (C));        \
+            C = NULL;                                 \
+        }                                             \
+    NETTY_END_MACRO
+
+#define NETTY_GET_METHOD(E, C, M, N, S, R)            \
+    NETTY_BEGIN_MACRO                                 \
+        M = (*(E))->GetMethodID((E), C, N, S);      \
+        if (M == NULL) {                            \
+            goto R;                                 \
+        }                                           \
+    NETTY_END_MACRO
+
+#define NETTY_GET_FIELD(E, C, F, N, S, R)             \
+    NETTY_BEGIN_MACRO                                 \
+        F = (*(E))->GetFieldID((E), C, N, S);       \
+        if (F == NULL) {                            \
+            goto R;                                 \
+        }                                           \
+    NETTY_END_MACRO
+
+#define NETTY_REASSIGN(V1, V2)                  \
+    NETTY_BEGIN_MACRO                           \
+        free(V1);                             \
+        V1 = V2;                              \
+        V2 = NULL;                            \
+    NETTY_END_MACRO
+
+#define NETTY_PREPEND(P, S, N, R)                                          \
+    NETTY_BEGIN_MACRO                                                      \
+        if ((N = netty_unix_util_prepend(P, S)) == NULL) {  \
+            goto R;                                                      \
+        }                                                                \
+    NETTY_END_MACRO
+
+
 /**
  * Return a new string (caller must free this string) which is equivalent to <pre>prefix + str</pre>.
  *
