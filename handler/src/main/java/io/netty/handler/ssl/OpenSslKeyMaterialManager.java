@@ -74,7 +74,9 @@ final class OpenSslKeyMaterialManager {
             if (type != null) {
                 String alias = chooseServerAlias(engine, type);
                 if (alias != null && aliases.add(alias)) {
-                    setKeyMaterial(engine, alias);
+                    if (!setKeyMaterial(engine, alias)) {
+                        return;
+                    }
                 }
             }
         }
@@ -91,13 +93,14 @@ final class OpenSslKeyMaterialManager {
         }
     }
 
-    private void setKeyMaterial(ReferenceCountedOpenSslEngine engine, String alias) throws SSLException {
+    private boolean setKeyMaterial(ReferenceCountedOpenSslEngine engine, String alias) throws SSLException {
         OpenSslKeyMaterial keyMaterial = null;
         try {
             keyMaterial = provider.chooseKeyMaterial(engine.alloc, alias);
             if (keyMaterial != null) {
-                engine.setKeyMaterial(keyMaterial);
+                return engine.setKeyMaterial(keyMaterial);
             }
+            return true;
         } catch (SSLException e) {
             throw e;
         } catch (Exception e) {
