@@ -71,6 +71,10 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
 
     @Override
     protected ThreadFactory newDefaultThreadFactory() {
+        /**
+         * 构建 NioEventLoopGroup 时 getClass() 得到
+         * {@link io.netty.channel.nio.NioEventLoopGroup}
+         */
         return new DefaultThreadFactory(getClass(), Thread.MAX_PRIORITY);
     }
 
