@@ -138,7 +138,6 @@ final class PoolChunk<T> implements PoolChunkMetric {
     PoolChunk<T> prev;
     PoolChunk<T> next;
 
-    // TODO: Test if adding padding helps under contention
     //private long pad0, pad1, pad2, pad3, pad4, pad5, pad6, pad7;
 
     PoolChunk(PoolArena<T> arena, T memory, int pageSize, int maxOrder, int pageShifts, int chunkSize, int offset) {

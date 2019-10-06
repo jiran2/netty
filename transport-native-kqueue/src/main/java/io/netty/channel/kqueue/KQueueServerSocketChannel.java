@@ -60,7 +60,6 @@ public final class KQueueServerSocketChannel extends AbstractKQueueServerChannel
     protected void doBind(SocketAddress localAddress) throws Exception {
         super.doBind(localAddress);
 
-        // TODO(scott): tcp fast open here!
         socket.listen(config.getBacklog());
         active = true;
     }

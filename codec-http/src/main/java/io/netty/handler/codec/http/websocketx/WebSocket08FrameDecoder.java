@@ -271,7 +271,6 @@ public class WebSocket08FrameDecoder extends ByteToMessageDecoder
                     return;
                 }
                 framePayloadLength = in.readLong();
-                // TODO: check if it's bigger than 0x7FFFFFFFFFFFFFFF, Maybe
                 // just check if it's negative?
 
                 if (framePayloadLength < 65536) {

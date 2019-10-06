@@ -160,7 +160,6 @@ public class SocketSslEchoTest extends AbstractSocketTest {
                 for (RenegotiationType rt: RenegotiationType.values()) {
                     if (rt != RenegotiationType.NONE &&
                         (sc instanceof OpenSslContext || cc instanceof OpenSslContext)) {
-                        // TODO: OpenSslEngine does not support renegotiation yet.
                         continue;
                     }
 

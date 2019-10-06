@@ -228,7 +228,6 @@ public final class UnixResolverDnsServerAddressStreamProvider implements DnsServ
     private static void putIfAbsent(Map<String, DnsServerAddresses> domainToNameServerStreamMap,
                                     String domainName,
                                     List<InetSocketAddress> addresses) {
-        // TODO(scott): sortlist is being ignored.
         putIfAbsent(domainToNameServerStreamMap, domainName, DnsServerAddresses.sequential(addresses));
     }
 

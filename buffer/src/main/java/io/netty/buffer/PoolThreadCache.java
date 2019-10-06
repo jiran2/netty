@@ -61,7 +61,6 @@ final class PoolThreadCache {
 
     private int allocations;
 
-    // TODO: Test if adding padding helps under contention
     //private long pad0, pad1, pad2, pad3, pad4, pad5, pad6, pad7;
 
     PoolThreadCache(PoolArena<byte[]> heapArena, PoolArena<ByteBuffer> directArena,
@@ -124,7 +123,6 @@ final class PoolThreadCache {
             @SuppressWarnings("unchecked")
             MemoryRegionCache<T>[] cache = new MemoryRegionCache[numCaches];
             for (int i = 0; i < cache.length; i++) {
-                // TODO: maybe use cacheSize / cache.length
                 cache[i] = new SubPageMemoryRegionCache<T>(cacheSize, sizeClass);
             }
             return cache;
@@ -221,7 +219,6 @@ final class PoolThreadCache {
         }
     }
 
-    /// TODO: In the future when we move to Java9+ we should use java.lang.ref.Cleaner.
     @Override
     protected void finalize() throws Throwable {
         try {

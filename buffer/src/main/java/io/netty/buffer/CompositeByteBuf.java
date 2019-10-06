@@ -498,7 +498,6 @@ public class CompositeByteBuf extends AbstractReferenceCountedByteBuf implements
         }
     }
 
-    // TODO optimize further, similar to ByteBuf[] version
     // (difference here is that we don't know *always* know precise size increase in advance,
     // but we do in the most common case that the Iterable is a Collection)
     private CompositeByteBuf addComponents(boolean increaseIndex, int cIndex, Iterable<ByteBuf> buffers) {
@@ -813,7 +812,6 @@ public class CompositeByteBuf extends AbstractReferenceCountedByteBuf implements
             ByteBuf padding = allocBuffer(paddingLength).setIndex(0, paddingLength);
             addComponent0(false, size, padding);
             if (componentCount >= maxNumComponents) {
-                // FIXME: No need to create a padding buffer and consolidate.
                 // Just create a big single buffer and put the current content there.
                 consolidateIfNeeded();
             }

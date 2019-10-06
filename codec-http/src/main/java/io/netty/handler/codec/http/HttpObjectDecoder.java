@@ -814,10 +814,6 @@ public abstract class HttpObjectDecoder extends ByteToMessageDecoder {
             }
 
             if (++ size > maxLength) {
-                // TODO: Respond with Bad Request and discard the traffic
-                //    or close the connection.
-                //       No need to notify the upstream handlers - just log.
-                //       If decoding a response, just throw an exception.
                 throw newException(maxLength);
             }
 

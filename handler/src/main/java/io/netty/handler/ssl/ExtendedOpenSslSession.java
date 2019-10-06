@@ -31,7 +31,6 @@ import java.util.List;
  */
 abstract class ExtendedOpenSslSession extends ExtendedSSLSession implements OpenSslSession {
 
-    // TODO: use OpenSSL API to actually fetch the real data but for now just do what Conscrypt does:
     // https://github.com/google/conscrypt/blob/1.2.0/common/
     // src/main/java/org/conscrypt/Java7ExtendedSSLSession.java#L32
     private static final String[] LOCAL_SUPPORTED_SIGNATURE_ALGORITHMS = {

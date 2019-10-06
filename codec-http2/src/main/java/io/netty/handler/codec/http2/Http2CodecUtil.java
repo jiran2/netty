@@ -305,7 +305,6 @@ public final class Http2CodecUtil {
                 if (allPromisesDone()) {
                     return tryPromise();
                 }
-                // TODO: We break the interface a bit here.
                 // Multiple failure events can be processed without issue because this is an aggregation.
                 return true;
             }
@@ -348,7 +347,6 @@ public final class Http2CodecUtil {
                 if (allPromisesDone()) {
                     return tryPromise();
                 }
-                // TODO: We break the interface a bit here.
                 // Multiple success events can be processed without issue because this is an aggregation.
                 return true;
             }

@@ -110,7 +110,6 @@ public final class OcspUtils {
     }
 
     /**
-     * TODO: This is a very crude and non-scalable HTTP client to fetch the OCSP response from the
      * CA's OCSP responder server. It's meant to demonstrate the basic building blocks on how to
      * interact with the responder server and you should consider using Netty's HTTP client instead.
      */

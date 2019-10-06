@@ -59,7 +59,6 @@ class HpackHeaderField {
 
     @Override
     public final int hashCode() {
-        // TODO(nmittler): Netty's build rules require this. Probably need a better implementation.
         return super.hashCode();
     }
 

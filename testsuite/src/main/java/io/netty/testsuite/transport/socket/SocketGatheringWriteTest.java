@@ -144,7 +144,6 @@ public class SocketGatheringWriteTest extends AbstractSocketTest {
             assertTrue(cf.await(60000));
             cf.sync();
         } catch (Throwable t) {
-            // TODO: Remove this once we fix this test.
             TestUtils.dump(StringUtil.simpleClassName(this));
             throw t;
         }

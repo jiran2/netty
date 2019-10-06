@@ -42,9 +42,6 @@ import java.util.List;
  */
 public class ProtobufVarint32FrameDecoder extends ByteToMessageDecoder {
 
-    // TODO maxFrameLength + safe skip + fail-fast option
-    //      (just like LengthFieldBasedFrameDecoder)
-
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out)
             throws Exception {

@@ -265,7 +265,6 @@ public class Http2FrameCodec extends Http2ConnectionHandler {
                 onUpgradeEvent(ctx, upgrade.retain());
                 Http2Stream stream = connection().stream(HTTP_UPGRADE_STREAM_ID);
                 if (stream.getProperty(streamKey) == null) {
-                    // TODO: improve handler/stream lifecycle so that stream isn't active before handler added.
                     // The stream was already made active, but ctx may have been null so it wasn't initialized.
                     // https://github.com/netty/netty/issues/4942
                     onStreamActive0(stream);
@@ -587,7 +586,6 @@ public class Http2FrameCodec extends Http2ConnectionHandler {
         @Override
         public void onPriorityRead(
                 ChannelHandlerContext ctx, int streamId, int streamDependency, short weight, boolean exclusive) {
-            // TODO: Maybe handle me
         }
 
         @Override
@@ -598,7 +596,6 @@ public class Http2FrameCodec extends Http2ConnectionHandler {
         @Override
         public void onPushPromiseRead(
                 ChannelHandlerContext ctx, int streamId, int promisedStreamId, Http2Headers headers, int padding)  {
-            // TODO: Maybe handle me
         }
 
         private Http2FrameStream requireStream(int streamId) {
@@ -646,7 +643,6 @@ public class Http2FrameCodec extends Http2ConnectionHandler {
     /**
      * {@link Http2FrameStream} implementation.
      */
-    // TODO(buchgr): Merge Http2FrameStream and Http2Stream.
     static class DefaultHttp2FrameStream implements Http2FrameStream {
 
         private volatile int id = -1;

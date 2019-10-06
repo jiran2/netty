@@ -826,7 +826,6 @@ public class SpdySessionHandler extends ChannelDuplexHandler {
         } else {
             closeSessionFutureListener = new ClosingChannelFutureListener(ctx, future);
         }
-        // FIXME: Close the connection forcibly after timeout.
     }
 
     private ChannelFuture sendGoAwayFrame(

@@ -1368,7 +1368,6 @@ public class SslHandler extends ByteToMessageDecoder implements ChannelOutboundH
                                  engine.getSession().getApplicationBufferSize() + " maybe too small.");
                     }
                     // Allocate a new buffer which can hold all the rest data and loop again.
-                    // TODO: We may want to reconsider how we calculate the length here as we may
                     // have more then one ssl message to decode.
                     decodeOut = allocate(ctx, engineType.calculatePendingData(this, bufferSize));
                     continue;

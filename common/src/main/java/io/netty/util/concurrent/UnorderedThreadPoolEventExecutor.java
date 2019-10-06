@@ -142,8 +142,6 @@ public final class UnorderedThreadPoolEventExecutor extends ScheduledThreadPoolE
 
     @Override
     public Future<?> shutdownGracefully(long quietPeriod, long timeout, TimeUnit unit) {
-        // TODO: At the moment this just calls shutdown but we may be able to do something more smart here which
-        //       respects the quietPeriod and timeout.
         shutdown();
         return terminationFuture();
     }

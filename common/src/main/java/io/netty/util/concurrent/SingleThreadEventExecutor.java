@@ -616,6 +616,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         }
     }
 
+    //todo 为什么一直判断
     @Override
     public boolean inEventLoop(Thread thread) {
         return thread == this.thread;
@@ -842,7 +843,6 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
         if (nanoTime - lastExecutionTime <= gracefulShutdownQuietPeriod) {
             // Check if any tasks were added to the queue every 100ms.
-            // TODO: Change the behavior of takeTask() so that it returns on timeout.
             wakeup(true);
             try {
                 Thread.sleep(100);

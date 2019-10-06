@@ -135,11 +135,6 @@ public abstract class Http2MultiplexTest<C extends Http2FrameCodec> {
         codec = null;
     }
 
-    // TODO(buchgr): Flush from child channel
-    // TODO(buchgr): ChildChannel.childReadComplete()
-    // TODO(buchgr): GOAWAY Logic
-    // TODO(buchgr): Test ChannelConfig.setMaxMessagesPerRead
-
     @Test
     public void writeUnknownFrame() {
         Http2StreamChannel childChannel = newOutboundStream(new ChannelInboundHandlerAdapter() {

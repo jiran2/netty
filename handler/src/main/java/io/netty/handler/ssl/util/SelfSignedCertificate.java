@@ -165,7 +165,6 @@ public final class SelfSignedCertificate {
                 throw new CertificateException(
                         "No provider succeeded to generate a self-signed certificate. " +
                                 "See debug log for the root cause.", t2);
-                // TODO: consider using Java 7 addSuppressed to append t
             }
         }
 

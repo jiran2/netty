@@ -85,7 +85,6 @@ abstract class ConscryptAlpnSslEngine extends JdkSslEngine {
     final int calculateOutNetBufSize(int plaintextBytes, int numBuffers) {
         // Assuming a max of one frame per component in a composite buffer.
         long maxOverhead = (long) Conscrypt.maxSealOverhead(getWrappedEngine()) * numBuffers;
-        // TODO(nmittler): update this to use MAX_ENCRYPTED_PACKET_LENGTH instead of Integer.MAX_VALUE
         return (int) min(Integer.MAX_VALUE, plaintextBytes + maxOverhead);
     }
 

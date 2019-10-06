@@ -124,7 +124,6 @@ public class SnappyFrameDecoder extends ByteToMessageDecoder {
                     }
 
                     if (inSize < 4 + chunkLength) {
-                        // TODO: Don't keep skippable bytes
                         return;
                     }
 

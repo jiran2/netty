@@ -356,7 +356,7 @@ public class JZlibEncoder extends ZlibEncoder {
                 public void run() {
                     ctx.close(promise);
                 }
-            }, 10, TimeUnit.SECONDS); // FIXME: Magic number
+            }, 10, TimeUnit.SECONDS);
         }
     }
 

@@ -96,7 +96,6 @@ public abstract class ReferenceCountedOpenSslContext extends SslContext implemen
     private static final ResourceLeakDetector<ReferenceCountedOpenSslContext> leakDetector =
             ResourceLeakDetectorFactory.instance().newResourceLeakDetector(ReferenceCountedOpenSslContext.class);
 
-    // TODO: Maybe make configurable ?
     protected static final int VERIFY_DEPTH = 10;
 
     /**

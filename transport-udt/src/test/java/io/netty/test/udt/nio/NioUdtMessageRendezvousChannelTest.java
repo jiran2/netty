@@ -51,8 +51,6 @@ public class NioUdtMessageRendezvousChannelTest extends AbstractUdtTest {
     /**
      * verify basic echo message rendezvous
      *
-     * FIXME: Re-enable after making it pass on Windows without unncessary tight loop.
-     *        https://github.com/netty/netty/issues/2853
      */
     @Test(timeout = 10 * 1000)
     @Ignore
