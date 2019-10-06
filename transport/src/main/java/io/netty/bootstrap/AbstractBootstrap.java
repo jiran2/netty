@@ -350,6 +350,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         // the pipeline in its channelRegistered() implementation.
         /**
          * 执行此任务进行端口绑定
+         * execute() 是SingleThreadEventExecutor.execute()
+         * 将Runnable添加到taskQueue里面
          */
         channel.eventLoop().execute(new Runnable() {
             @Override

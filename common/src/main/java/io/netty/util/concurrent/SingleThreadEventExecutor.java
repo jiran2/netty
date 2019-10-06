@@ -1037,6 +1037,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     private void doStartThread() {
         assert thread == null;
+        /**
+         * executor 实例为 {@link ThreadPerTaskExecutor}
+         */
         executor.execute(new Runnable() {
             @Override
             public void run() {
