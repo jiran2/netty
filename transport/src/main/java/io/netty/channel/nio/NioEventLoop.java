@@ -730,8 +730,8 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             // Also check for readOps of 0 to workaround possible JDK bug which may otherwise lead
             // to a spin loop
             if ((readyOps & (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) {
-                //此时unsafe的实现是个多态，对于NioServerSocketChannel，它的读操作就是接收客户端的TCP连接
                 /**
+                 * 此时unsafe的实现是个多态，对于NioServerSocketChannel，它的读操作就是接收客户端的TCP连接
                  * unsafe实例是{@link AbstractNioMessageChannel.NioMessageUnsafe}
                  */
                 unsafe.read();
