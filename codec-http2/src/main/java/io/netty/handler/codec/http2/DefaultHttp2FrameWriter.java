@@ -556,7 +556,6 @@ public class DefaultHttp2FrameWriter implements Http2FrameWriter, Http2FrameSize
             ByteBuf headerBlock, int padding, SimpleChannelPromiseAggregator promiseAggregator) {
         Http2Flags flags = new Http2Flags().paddingPresent(padding > 0);
         int maxFragmentLength = maxFrameSize - padding;
-        // TODO: same padding is applied to all frames, is this desired?
         if (maxFragmentLength <= 0) {
             return promiseAggregator.setFailure(new IllegalArgumentException(
                     "Padding [" + padding + "] is too large for max frame size [" + maxFrameSize + "]"));

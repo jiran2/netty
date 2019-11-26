@@ -28,7 +28,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import static io.netty.util.internal.ObjectUtil.checkNotNull;
 
-// FIXME(trustin): Find a better name and move it to the 'resolver' module.
 final class InflightNameResolver<T> implements NameResolver<T> {
 
     private final EventExecutor executor;

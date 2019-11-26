@@ -29,7 +29,6 @@ public final class DnsServerAddressStreamProviders {
     // We use 5 minutes which is the same as what OpenJDK is using in sun.net.dns.ResolverConfigurationImpl.
     private static final long REFRESH_INTERVAL = TimeUnit.MINUTES.toNanos(5);
 
-    // TODO(scott): how is this done on Windows? This may require a JNI call to GetNetworkParams
     // https://msdn.microsoft.com/en-us/library/aa365968(VS.85).aspx.
     private static final DnsServerAddressStreamProvider DEFAULT_DNS_SERVER_ADDRESS_STREAM_PROVIDER =
             new DnsServerAddressStreamProvider() {

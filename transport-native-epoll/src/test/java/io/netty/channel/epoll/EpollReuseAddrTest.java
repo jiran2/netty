@@ -117,7 +117,7 @@ public class EpollReuseAddrTest {
     }
 
     @Test(timeout = 10000)
-    @Ignore // TODO: Unignore after making it pass on centos6-1 and debian7-1
+    @Ignore
     public void testMultipleBindDatagramChannel() throws Exception {
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         Assume.assumeTrue(versionEqOrGt(3, 9, 0));

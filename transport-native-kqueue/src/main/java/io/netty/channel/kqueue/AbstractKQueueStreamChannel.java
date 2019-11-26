@@ -352,7 +352,6 @@ public abstract class AbstractKQueueStreamChannel extends AbstractKQueueChannel 
         in.forEachFlushedMessage(array);
 
         if (array.count() >= 1) {
-            // TODO: Handle the case where cnt == 1 specially.
             return writeBytesMultiple(in, array);
         }
         // cnt == 0, which means the outbound buffer contained empty buffers only.

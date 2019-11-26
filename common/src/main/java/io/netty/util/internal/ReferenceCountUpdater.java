@@ -75,7 +75,6 @@ public abstract class ReferenceCountUpdater<T extends ReferenceCounted> {
     }
 
     private int nonVolatileRawCnt(T instance) {
-        // TODO: Once we compile against later versions of Java we can replace the Unsafe usage here by varhandles.
         final long offset = unsafeOffset();
         return offset != -1 ? PlatformDependent.getInt(instance, offset) : updater().get(instance);
     }

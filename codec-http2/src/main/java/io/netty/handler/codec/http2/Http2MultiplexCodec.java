@@ -195,7 +195,6 @@ public class Http2MultiplexCodec extends Http2FrameCodec {
         }
     }
 
-    // TODO: This is most likely not the best way to expose this, need to think more about it.
     final Http2StreamChannel newOutboundStream() {
         return new Http2MultiplexCodecStreamChannel(newStream(), null);
     }

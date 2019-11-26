@@ -960,7 +960,6 @@ abstract class AbstractHttp2StreamChannel extends DefaultAttributeMap implements
                         // Close channel if needed.
                         closeForcibly();
                     } else {
-                        // TODO: Once Http2StreamChannel extends DuplexChannel we should call shutdownOutput(...)
                         outboundClosed = true;
                     }
                 }

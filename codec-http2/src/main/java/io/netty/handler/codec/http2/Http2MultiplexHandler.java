@@ -258,7 +258,6 @@ public final class Http2MultiplexHandler extends Http2ChannelDuplexHandler {
         ctx.fireUserEventTriggered(evt);
     }
 
-    // TODO: This is most likely not the best way to expose this, need to think more about it.
     Http2StreamChannel newOutboundStream() {
         return new Http2MultiplexHandlerStreamChannel((DefaultHttp2FrameStream) newStream(), null);
     }

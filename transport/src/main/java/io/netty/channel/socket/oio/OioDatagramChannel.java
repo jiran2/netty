@@ -126,7 +126,6 @@ public class OioDatagramChannel extends AbstractOioMessageChannel
      * This can be safely cast to {@link OioDatagramChannelConfig}.
      */
     @Override
-    // TODO: Change return type to OioDatagramChannelConfig in next major release
     public DatagramChannelConfig config() {
         return config;
     }

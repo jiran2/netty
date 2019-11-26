@@ -84,7 +84,7 @@ public class ConscryptOpenSslEngineInteropTest extends ConscryptSslEngineTest {
 
     @Override
     protected boolean mySetupMutualAuthServerIsValidClientException(Throwable cause) {
-        // TODO(scott): work around for a JDK issue. The exception should be SSLHandshakeException.
+
         return super.mySetupMutualAuthServerIsValidClientException(cause) || causedBySSLException(cause);
     }
 
@@ -132,7 +132,7 @@ public class ConscryptOpenSslEngineInteropTest extends ConscryptSslEngineTest {
 
     @Override
     protected boolean mySetupMutualAuthServerIsValidServerException(Throwable cause) {
-        // TODO(scott): work around for a JDK issue. The exception should be SSLHandshakeException.
+
         return super.mySetupMutualAuthServerIsValidServerException(cause) || causedBySSLException(cause);
     }
 

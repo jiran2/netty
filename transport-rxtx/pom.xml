@@ -44,7 +44,6 @@
       <artifactId>netty-transport</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- FIXME find/make osgi bundle -->
     <dependency>
       <groupId>org.rxtx</groupId>
       <artifactId>rxtx</artifactId>

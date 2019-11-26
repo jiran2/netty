@@ -260,7 +260,6 @@ public abstract class Recycler<T> {
                 this.availableSharedCapacity = availableSharedCapacity;
             }
 
-            /// TODO: In the future when we move to Java9+ we should use java.lang.ref.Cleaner.
             @Override
             protected void finalize() throws Throwable {
                 try {

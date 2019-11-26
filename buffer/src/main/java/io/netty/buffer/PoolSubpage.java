@@ -34,7 +34,6 @@ final class PoolSubpage<T> implements PoolSubpageMetric {
     private int nextAvail;
     private int numAvail;
 
-    // TODO: Test if adding padding helps under contention
     //private long pad0, pad1, pad2, pad3, pad4, pad5, pad6, pad7;
 
     /** Special constructor that creates a linked list head */

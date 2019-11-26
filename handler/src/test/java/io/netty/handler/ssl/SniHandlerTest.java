@@ -315,7 +315,6 @@ public class SniHandlerTest {
             try {
                 // Push the handshake message.
                 ch.writeInbound(Unpooled.wrappedBuffer(message));
-                // TODO(scott): This should fail becasue the engine should reject zero length records during handshake.
                 // See https://github.com/netty/netty/issues/6348.
                 // fail();
             } catch (Exception e) {
@@ -326,7 +325,6 @@ public class SniHandlerTest {
 
             // When the channel is closed the SslHandler will write an empty buffer to the channel.
             ByteBuf buf = ch.readOutbound();
-            // TODO(scott): if the engine is shutdown correctly then this buffer shouldn't be null!
             // See https://github.com/netty/netty/issues/6348.
             if (buf != null) {
                 assertFalse(buf.isReadable());

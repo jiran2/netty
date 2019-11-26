@@ -251,7 +251,6 @@ static jint _socket(JNIEnv* env, jclass clazz, int domain, int type) {
             // else we failed to enable dual stack mode.
             // It is assumed the socket is re‐stricted to sending and receiving IPv6 packets only.
             // Don't close fd and don't return -1. At best we can do is log.
-            // TODO: bubble this up to an actual Logger.
         }
     }
     return fd;

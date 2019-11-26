@@ -1139,7 +1139,6 @@ public class HttpPostMultipartRequestDecoder implements InterfaceHttpPostRequest
                                 return sb.toString();
                             }
                         }
-                        // FIXME what do we do here?
                         // either considering it is fine, either waiting for
                         // more data to come?
                         // lets try considering it is fine...
@@ -1260,7 +1259,6 @@ public class HttpPostMultipartRequestDecoder implements InterfaceHttpPostRequest
                                     return sb.toString();
                                 }
                             }
-                            // FIXME what do we do here?
                             // either considering it is fine, either waiting for
                             // more data to come?
                             // lets try considering it is fine...

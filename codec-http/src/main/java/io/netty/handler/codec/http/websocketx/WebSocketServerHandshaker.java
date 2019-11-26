@@ -287,7 +287,6 @@ public abstract class WebSocketServerHandshaker {
         // Add aggregator and ensure we feed the HttpRequest so it is aggregated. A limit o 8192 should be more then
         // enough for the websockets handshake payload.
         //
-        // TODO: Make handshake work without HttpObjectAggregator at all.
         String aggregatorName = "httpAggregator";
         p.addAfter(ctx.name(), aggregatorName, new HttpObjectAggregator(8192));
         p.addAfter(aggregatorName, "handshaker", new SimpleChannelInboundHandler<FullHttpRequest>() {

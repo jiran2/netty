@@ -54,7 +54,6 @@ import java.util.List;
 @Sharable
 public class StringDecoder extends MessageToMessageDecoder<ByteBuf> {
 
-    // TODO Use CharsetDecoder instead.
     private final Charset charset;
 
     /**

@@ -315,7 +315,7 @@ public class JdkSslEngineTest extends SSLEngineTest {
 
     @Override
     protected boolean mySetupMutualAuthServerIsValidException(Throwable cause) {
-        // TODO(scott): work around for a JDK issue. The exception should be SSLHandshakeException.
+
         return super.mySetupMutualAuthServerIsValidException(cause) || causedBySSLException(cause);
     }
 

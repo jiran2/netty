@@ -154,8 +154,6 @@ public final class Errors {
             throw new FileNotFoundException();
         }
 
-        // TODO: We could even go further and use a pre-instantiated IOException for the other error codes, but for
-        //       all other errors it may be better to just include a stack trace.
         throw newIOException(method, err);
     }
 

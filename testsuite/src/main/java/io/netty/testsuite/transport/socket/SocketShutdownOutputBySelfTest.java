@@ -277,7 +277,6 @@ public class SocketShutdownOutputBySelfTest extends AbstractClientSocketTest {
             try {
                 Boolean writability = writabilityQueue.takeLast();
                 assertEquals(isWritable, writability);
-                // TODO(scott): why do we get multiple writability changes here ... race condition?
                 drainWritabilityQueue();
             } catch (Throwable c) {
                 c.printStackTrace();

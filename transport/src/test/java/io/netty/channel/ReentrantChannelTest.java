@@ -274,7 +274,6 @@ public class ReentrantChannelTest extends BaseChannelTest {
             clientChannel.writeAndFlush(createTestBuf(2000)).sync();
             fail();
         } catch (Throwable cce) {
-            // FIXME:  shouldn't this contain the "intentional failure" exception?
             assertEquals(ClosedChannelException.class, cce.getClass());
         }
 

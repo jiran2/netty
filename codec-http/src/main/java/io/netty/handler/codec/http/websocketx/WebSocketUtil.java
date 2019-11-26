@@ -64,7 +64,6 @@ final class WebSocketUtil {
      * @return The hashed data
      */
     static byte[] md5(byte[] data) {
-        // TODO(normanmaurer): Create md5 method that not need MessageDigest.
         return digest(MD5, data);
     }
 
@@ -75,7 +74,6 @@ final class WebSocketUtil {
      * @return The hashed data
      */
     static byte[] sha1(byte[] data) {
-        // TODO(normanmaurer): Create sha1 method that not need MessageDigest.
         return digest(SHA1, data);
     }
 
