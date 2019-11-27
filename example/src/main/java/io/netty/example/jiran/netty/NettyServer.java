@@ -13,7 +13,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * @date 2019年11月27日
  */
 public class NettyServer {
-
     public static void main(String[] args) {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
@@ -35,11 +34,9 @@ public class NettyServer {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }
-
     }
 
     private static class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
-
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
             ch.pipeline().addLast(new MyNettyServerHandler());
