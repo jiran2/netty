@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 
-public class MyNettyHandler extends ChannelInboundHandlerAdapter {
+public class MyNettyServerHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
