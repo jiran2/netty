@@ -21,13 +21,7 @@ public class NioServer implements Runnable {
 
     public NioServer() {
         try {
-            selector = Selector.open();
-            serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.socket().bind(new InetSocketAddress(8787), 1024);
-            //将ServerSocketChannel注册到Selector上，监听ACCEPT事件
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            System.out.println("NioServer start ...");
+            init();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
@@ -36,6 +30,23 @@ public class NioServer implements Runnable {
 
     @Override
     public void run() {
+        //Selector检查有没有准备好的事件
+        doSelect();
+        //任务结束关闭当前Server的Selector
+        closeSelector();
+    }
+
+    private void closeSelector() {
+        if (selector != null) {
+            try {
+                selector.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void doSelect() {
         while (!stop) {
             try {
                 //循环查找有没有准备好的SelectionKey
@@ -61,13 +72,6 @@ public class NioServer implements Runnable {
                 e.printStackTrace();
             }
         }
-        if (selector != null) {
-            try {
-                selector.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static void main(String[] args) {
@@ -76,13 +80,14 @@ public class NioServer implements Runnable {
 
     private void handlerInput(SelectionKey selectionKey) throws IOException {
         if (selectionKey.isValid()) {
-            //
+            //有新连接连接时会注册OP_ACCEPT事件
             if (selectionKey.isAcceptable()) {
                 ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
                 SocketChannel accept = serverSocketChannel.accept();
                 accept.configureBlocking(false);
                 accept.register(selector, SelectionKey.OP_READ);
             }
+            //可读事件
             if (selectionKey.isReadable()) {
                 SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
                 ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
@@ -106,5 +111,15 @@ public class NioServer implements Runnable {
         responseBuffer.put(bytes);
         responseBuffer.flip();
         channel.write(responseBuffer);
+    }
+
+    private void init() throws IOException {
+        selector = Selector.open();
+        serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.configureBlocking(false);
+        serverSocketChannel.socket().bind(new InetSocketAddress(8787), 1024);
+        //将ServerSocketChannel注册到Selector上，监听ACCEPT事件
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        System.out.println("NioServer start ...");
     }
 }
