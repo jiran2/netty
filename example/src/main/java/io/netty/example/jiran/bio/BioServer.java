@@ -1,4 +1,4 @@
-package io.netty.example.bio;
+package io.netty.example.jiran.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;

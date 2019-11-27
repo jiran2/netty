@@ -1,4 +1,4 @@
-package io.netty.example.bio;
+package io.netty.example.jiran.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
